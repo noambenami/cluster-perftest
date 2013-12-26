@@ -1,0 +1,26 @@
+{
+  "name": "cluster-perftest",
+  "version": "0.0.1",
+  "license": "CPAL 1.0",
+  "main": "./index.js",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "optimist": "~0.6.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noambenami/cluster-perftest"
+  },
+  "keywords": [
+    "cluster", "performance", "testing"
+  ]
+}

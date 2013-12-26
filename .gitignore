@@ -1,0 +1,17 @@
+node_modules
+bower_components
+dist
+.tmp
+.sass-cache
+.DS_Store
+*.orig
+*.log
+.vimrc
+.idea
+coverage
+selenium
+editor-functional-tests/test/config.js
+test-results.xml
+keyfile
+app/styles/css
+scenario/Sauce-Connect-latest
