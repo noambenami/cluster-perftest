@@ -1,13 +1,15 @@
 'use strict';
 
 var cluster = require('cluster');
-var testRunner = require('./src/TestRunner.js');
-var WorkerResult = require('./src/WorkerResult.js');
-var WorkerResults = require('./src/WorkerResults.js');
+var testRunner = require('./src/TestRunner');
+var hrTimer = require('./src/HighResTimer');
+var WorkerResult = require('./src/WorkerResult');
+var WorkerResults = require('./src/WorkerResults');
 
 var workerResults = null;
 var currentNumWorkersToLaunch = 1;
 var maxNumWorkersToLaunch = 1;
+var timer;
 
 //--- Master:
 if (cluster.isMaster) {
@@ -23,7 +25,6 @@ if (cluster.isMaster) {
     .argv;
 
   console.log('Starting: %d \'%s\' cores found.', os.cpus().length, os.cpus()[0].model);
-  console.log('Master process id: %d', process.pid);
   console.log('Workers will execute method "%s" of "%s" %s times.', argv.func, argv.module, argv.loopCount);
 
   maxNumWorkersToLaunch = argv.numWorkers;
@@ -54,6 +55,7 @@ else {
 function launchWorkers() {
   workerResults = new WorkerResults();
   var workersLaunched = 0;
+  timer = hrTimer.start();
   for (var id in cluster.workers) {
     cluster.workers[id].send(argv);
     workersLaunched++;
@@ -88,6 +90,7 @@ function collectResult(result) {
   var numWorkersDone = workerResults.results.length;
   if (numWorkersDone === currentNumWorkersToLaunch) {
     //Report results
+    workerResults.totalTimeMS = timer.stop();
     reportResults();
     if (currentNumWorkersToLaunch < maxNumWorkersToLaunch) {
       currentNumWorkersToLaunch++;
@@ -103,8 +106,8 @@ function collectResult(result) {
  * Reports the results of the concurrent executions to console
  */
 function reportResults() {
-  console.log('\n%d concurrent workers : Average time/Worker: %dms\t | Total Output: %d\t | Avg Output: %d',
-    workerResults.results.length, workerResults.getAvgElapsedMS(), workerResults.getSumOutput(), workerResults.getAvgOutput());
+  console.log('\n%d workers | Total time: %dms\t |  Avg time/Worker: %dms\t | Total Output: %d\t | Avg Output: %d',
+    workerResults.results.length, workerResults.totalTimeMS, workerResults.getAvgElapsedMS(), workerResults.getSumOutput(), workerResults.getAvgOutput());
 }
 
 /**
