@@ -107,7 +107,8 @@ function collectResult(result) {
  */
 function reportResults() {
   console.log('\n%d workers | Total time: %dms\t |  Avg time/Worker: %dms\t | Total Output: %d\t | Avg Output: %d',
-    workerResults.results.length, workerResults.totalTimeMS, workerResults.getAvgElapsedMS(), workerResults.getSumOutput(), workerResults.getAvgOutput());
+    workerResults.results.length, workerResults.totalTimeMS.toFixed(2), workerResults.getAvgElapsedMS(),
+    workerResults.getSumOutput(), workerResults.getAvgOutput());
 }
 
 /**

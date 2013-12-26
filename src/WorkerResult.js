@@ -26,10 +26,6 @@ exports = module.exports = function WorkerResult(source) {
     return arrayUtils.avg(this.results, 'output');
   };
 
-  this.getSumElapsedMS = function getSumElapsedMS() {
-    return arrayUtils.sum(this.results, 'elapsedMS');
-  };
-
   this.getAvgElapsedMS = function getAvgElapsedMS() {
     return arrayUtils.avg(this.results, 'elapsedMS');
   };

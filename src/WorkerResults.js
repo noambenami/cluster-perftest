@@ -20,7 +20,7 @@ exports = module.exports = function WorkerResults() {
 
   /**
    * Sum of all of the outputs across all worker results
-   * @returns {Number}
+   * @returns {number}
    */
   this.getSumOutput = function getSumOutput() {
     var data = [];
@@ -30,7 +30,7 @@ exports = module.exports = function WorkerResults() {
 
   /**
    * Average of all of the output averages across all worker results
-   * @returns {Number}
+   * @returns {number}
    */
   this.getAvgOutput = function getAvgOutput() {
     var data = [];
@@ -40,11 +40,11 @@ exports = module.exports = function WorkerResults() {
 
   /**
    * Average of all of the elapsed time averages across all worker results
-   * @returns {Number}
+   * @returns {number}
    */
   this.getAvgElapsedMS = function getAvgElapsedMS() {
     var data = [];
     this.results.forEach(function(item) { data.push(item.getAvgElapsedMS()); });
-    return arrayUtils.avg(data);
+    return arrayUtils.avg(data).toFixed(2);
   };
 };
