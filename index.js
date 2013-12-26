@@ -66,7 +66,7 @@ function launchWorkers() {
 /**
  * Runs on worker process to execute the task that we are testing for scalability
  *
- * @param msg {func, module, loopCount} Instance of argv
+ * @param {{module: string, func: string, loopCount: number}} msg Instance of argv
  */
 function runFunc(msg) {
   var results = testRunner.run(msg.module, msg.func, msg.loopCount);
@@ -78,7 +78,7 @@ function runFunc(msg) {
  *  Runs on master process to aggregate the work done by worker processes. Will relaunch the
  *  process if necessary to complete all worker count loop.
  *
- * @param results {WorkerResults}
+ * @param {WorkerResults} result
  */
 function collectResult(result) {
   //Data coming back from workers is marshaled without the prototype,
@@ -99,11 +99,17 @@ function collectResult(result) {
   }
 }
 
+/**
+ * Reports the results of the concurrent executions to console
+ */
 function reportResults() {
   console.log('\n%d concurrent workers : Average time/Worker: %dms\t | Total Output: %d\t | Avg Output: %d',
     workerResults.results.length, workerResults.getAvgElapsedMS(), workerResults.getSumOutput(), workerResults.getAvgOutput());
 }
 
+/**
+ * Disconnects all of the worker threads, allowing this one to exit
+ */
 function shutdown() {
   console.log('\nShutting down...');
   for (var id in cluster.workers) {
